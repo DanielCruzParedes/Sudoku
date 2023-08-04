@@ -16,11 +16,12 @@ public class Sudoku extends JFrame implements ActionListener {
         sudokuPanel.setLayout(new GridLayout(9, 9));
 
         botones = new JButton[9][9];
-
+        Font bonita = new Font("Arial", Font.BOLD, 30);
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 JButton button = new JButton();
                 button.addActionListener(this);
+                button.setFont(bonita);
                 Dimension dimensionbotones = new Dimension(80,80);
                 button.setPreferredSize(dimensionbotones);
                 botones[row][col] = button;
@@ -33,8 +34,10 @@ public class Sudoku extends JFrame implements ActionListener {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+        
         ponerNumeros();
         bloquearBotonesFijos();
+        todoBlanco();
     }
 
     public static void main(String[] args) {
@@ -47,7 +50,6 @@ public class Sudoku extends JFrame implements ActionListener {
         int row = -1;
         int col = -1;
 
-        // Find the button's position in the array
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (botones[i][j] == clickedButton) {
@@ -63,17 +65,25 @@ public class Sudoku extends JFrame implements ActionListener {
         String numPorPoner="";
         int numeroIngresado=0;
         try{
+            numeroIngresado=0;
         numPorPoner=JOptionPane.showInputDialog("Ingrese un numero de 1 al 9 para la posicion ("+row+", "+col+")");
+            System.out.println(numPorPoner);
            numeroIngresado = Integer.valueOf(numPorPoner);
             
         }catch(Exception NumberFormatException){
             JOptionPane.showMessageDialog(null, "INGRESE UN NUMERO");
         }
-           
+if(numPorPoner==null){
+    numPorPoner="";
+}else{
 while(numeroIngresado>9 || numeroIngresado<1){
+    numeroIngresado=1;
     numPorPoner=JOptionPane.showInputDialog("Ingrese un numero de 1 al 9 para la posicion ("+row+", "+col+")");
     numeroIngresado = Integer.valueOf(numPorPoner);
+        
 }
+    
+}           
            
            if(!numPorPoner.equals("")){
         botones[row][col].setText(numPorPoner);
@@ -86,13 +96,24 @@ while(numeroIngresado>9 || numeroIngresado<1){
         boolean finPartida=TerminoPartido();
         if(finPartida==true){
             JOptionPane.showMessageDialog(null, "Has ganado!");
+            MenuPrincipal mp = new MenuPrincipal();
+            mp.setVisible(true);
             this.dispose();
         }
             
         }
     }
         
-    
+    public void todoBlanco(){
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                botones[i][j].setBackground(Color.white);
+                
+                
+                }
+            }
+        
+    }
     public void ponerNumeros(){
         botones[0][0].setText("5");
         botones[0][1].setText("3");
